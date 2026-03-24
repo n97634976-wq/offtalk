@@ -1,6 +1,8 @@
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/chat_providers.dart';
+import '../../models/models.dart';
 import 'chat_screen.dart';
 import 'package:intl/intl.dart';
 
@@ -30,7 +32,7 @@ class ChatListScreen extends ConsumerWidget {
                 // Find contact info. If group, handle differently (not fully implemented in models yet)
                 final contact = contacts.firstWhere(
                   (c) => c.phoneNumber == chat.id, 
-                  orElse: () => Contact(phoneNumber: chat.id, displayName: 'Unknown', publicKey: [], lastSeen: 0)
+                  orElse: () => Contact(phoneNumber: chat.id, displayName: 'Unknown', publicKey: Uint8List.fromList([]), lastSeen: 0)
                 );
 
                 return ListTile(

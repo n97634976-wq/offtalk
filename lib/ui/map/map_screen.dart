@@ -65,7 +65,7 @@ class _MapScreenState extends State<MapScreen> {
       final store = const FMTCStore('mapStore');
       final stats = await store.stats.all;
       setState(() {
-        _cachedTileCount = stats.tileCount;
+        _cachedTileCount = stats.length;
       });
     } catch (_) {}
   }
@@ -125,10 +125,10 @@ class _MapScreenState extends State<MapScreen> {
 
       await for (final progress in store.download.startForeground(
         region: downloadable,
-      )) {
+      ).downloadProgress) {
         if (!mounted) break;
-        totalTiles = progress.maxTiles;
-        downloadedTiles = progress.attemptedTiles;
+        totalTiles = progress.maxTilesCount;
+        downloadedTiles = progress.attemptedTilesCount;
         setState(() {
           _downloadProgress = totalTiles > 0 ? downloadedTiles / totalTiles : 0;
         });

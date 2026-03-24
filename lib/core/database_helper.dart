@@ -158,4 +158,37 @@ class DatabaseHelper {
     final db = await instance.database;
     await db.update('messages', {'delivery_status': status}, where: 'id = ?', whereArgs: [id]);
   }
+
+  // Contact Blocking
+  Future<void> blockContact(String id) async {
+    final db = await instance.database;
+    await db.update('contacts', {'is_blocked': 1}, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<void> unblockContact(String id) async {
+    final db = await instance.database;
+    await db.update('contacts', {'is_blocked': 0}, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<bool> isContactBlocked(String id) async {
+    final db = await instance.database;
+    final maps = await db.query('contacts', where: 'id = ? AND is_blocked = 1', whereArgs: [id]);
+    return maps.isNotEmpty;
+  }
+
+  // Self-Destruct Messages
+  Future<void> deleteExpiredMessages() async {
+    final db = await instance.database;
+    final now = DateTime.now().millisecondsSinceEpoch;
+    // Delete messages where timestamp + (ttl * 1000ms) < now
+    await db.rawDelete(
+      'DELETE FROM messages WHERE ttl > 0 AND (timestamp + ttl * 1000) < ?',
+      [now],
+    );
+  }
+
+  Future<void> deleteMessage(String id) async {
+    final db = await instance.database;
+    await db.delete('messages', where: 'id = ?', whereArgs: [id]);
+  }
 }

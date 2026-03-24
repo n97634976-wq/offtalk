@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:libp2p/libp2p.dart'; // Fictional/Placeholder wrapper mimicking libp2p semantics based on pubspec version
+import 'package:dart_libp2p/dart_libp2p.dart'; // Fictional/Placeholder wrapper mimicking libp2p semantics based on pubspec version
 
 /// Handles internet-based P2P overlay routing when a device has connectivity.
 /// Uses DHT for peer discovery based on phone number hash, Noise for direct stream encryption,

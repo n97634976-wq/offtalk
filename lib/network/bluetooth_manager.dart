@@ -18,6 +18,8 @@ class BluetoothManager {
   Function(String peerId)? onPeerConnected;
   Function(String peerId)? onPeerDisconnected;
 
+  int get connectedPeerCount => _connectedPeers.length;
+
   String? _myNetworkId;
 
   Future<void> init() async {
@@ -91,10 +93,12 @@ class BluetoothManager {
         onPeerConnected!(device.remoteId.str);
       }
 
-      device.cancelWhenDisconnected((next) {
-        _connectedPeers.remove(device.remoteId.str);
-        if (onPeerDisconnected != null) {
-          onPeerDisconnected!(device.remoteId.str);
+      device.connectionState.listen((state) {
+        if (state == BluetoothConnectionState.disconnected) {
+          _connectedPeers.remove(device.remoteId.str);
+          if (onPeerDisconnected != null) {
+            onPeerDisconnected!(device.remoteId.str);
+          }
         }
       });
     } catch (e) {

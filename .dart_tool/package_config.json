@@ -1,0 +1,1312 @@
+{
+  "configVersion": 2,
+  "packages": [
+    {
+      "name": "_fe_analyzer_shared",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/_fe_analyzer_shared-85.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "adaptive_number",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/adaptive_number-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "analyzer",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/analyzer-7.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "analyzer_plugin",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/analyzer_plugin-0.13.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "archive",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/archive-4.0.9",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "args",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/args-2.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "async",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/async-2.13.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "background_fetch",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/background_fetch-1.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "base32",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/base32-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "base_x",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/base_x-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "bluez",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/bluez-0.8.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "boolean_selector",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/boolean_selector-2.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "bs58",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/bs58-1.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "buffer",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/buffer-1.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "build",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/build-2.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "build_config",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/build_config-1.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "build_daemon",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/build_daemon-4.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "build_resolvers",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/build_resolvers-2.4.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "build_runner",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/build_runner-2.4.14",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "build_runner_core",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/build_runner_core-8.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "built_collection",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/built_collection-5.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "built_value",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/built_value-8.12.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "cbor",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/cbor-6.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "characters",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/characters-1.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "checked_yaml",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/checked_yaml-2.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "cli_util",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/cli_util-0.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "clock",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/clock-1.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "code_assets",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/code_assets-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "code_builder",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/code_builder-4.11.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "collection",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/collection-1.19.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "convert",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/convert-3.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "cross_file",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/cross_file-0.3.5+2",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "crypto",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/crypto-3.0.7",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "cryptography",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/cryptography-2.9.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "custom_lint_core",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/custom_lint_core-0.7.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "custom_lint_visitor",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/custom_lint_visitor-1.0.0+7.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "dart_earcut",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dart_earcut-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "dart_libp2p",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dart_libp2p-0.5.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "dart_libp2p_kad_dht",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dart_libp2p_kad_dht-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "dart_multihash",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dart_multihash-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "dart_polylabel2",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dart_polylabel2-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "dart_style",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dart_style-3.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "dart_udx",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dart_udx-0.3.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "dart_webrtc",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dart_webrtc-1.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "dbus",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dbus-0.7.12",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "dcid",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dcid-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "dio",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dio-5.9.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "dio_web_adapter",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/dio_web_adapter-2.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "emoji_picker_flutter",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/emoji_picker_flutter-4.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "equatable",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/equatable-2.0.8",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "fake_async",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/fake_async-1.3.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "ffi",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/ffi-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "file",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/file-7.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "file_picker",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/file_picker-8.3.7",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "file_selector_linux",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/file_selector_linux-0.9.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "file_selector_macos",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/file_selector_macos-0.9.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "file_selector_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/file_selector_platform_interface-2.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "file_selector_windows",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/file_selector_windows-0.9.3+5",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "fixnum",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/fixnum-1.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "flat_buffers",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flat_buffers-23.5.26",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "flutter",
+      "rootUri": "file:///home/whoami/snap/flutter/common/flutter/packages/flutter",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "flutter_blue_plus",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_blue_plus-1.36.8",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "flutter_blue_plus_android",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_blue_plus_android-7.0.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "flutter_blue_plus_darwin",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_blue_plus_darwin-7.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "flutter_blue_plus_linux",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_blue_plus_linux-7.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "flutter_blue_plus_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_blue_plus_platform_interface-7.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "flutter_blue_plus_web",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_blue_plus_web-7.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "flutter_foreground_task",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_foreground_task-6.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "flutter_launcher_icons",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_launcher_icons-0.14.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "flutter_lints",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_lints-3.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "flutter_map",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_map-8.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "flutter_map_tile_caching",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_map_tile_caching-10.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "flutter_plugin_android_lifecycle",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.33",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "flutter_riverpod",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_riverpod-2.6.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "flutter_sound",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_sound-9.28.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "flutter_sound_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_sound_platform_interface-9.28.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "flutter_sound_web",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_sound_web-9.28.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "flutter_test",
+      "rootUri": "file:///home/whoami/snap/flutter/common/flutter/packages/flutter_test",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "flutter_web_plugins",
+      "rootUri": "file:///home/whoami/snap/flutter/common/flutter/packages/flutter_web_plugins",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "flutter_webrtc",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_webrtc-1.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "freezed_annotation",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/freezed_annotation-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "frontend_server_client",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/frontend_server_client-4.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "geolocator",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/geolocator-11.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "geolocator_android",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/geolocator_android-4.6.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "geolocator_apple",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/geolocator_apple-2.3.13",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "geolocator_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/geolocator_platform_interface-4.2.6",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "geolocator_web",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/geolocator_web-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "geolocator_windows",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/geolocator_windows-0.2.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "glob",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/glob-2.1.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "graphs",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/graphs-2.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "hex",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/hex-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "hive",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/hive-2.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "hive_flutter",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/hive_flutter-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "hooks",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/hooks-1.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
+    },
+    {
+      "name": "http",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/http-1.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "http_multi_server",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/http_multi_server-3.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "http_parser",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/http_parser-4.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "image",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/image-4.8.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "image_picker",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/image_picker-1.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "image_picker_android",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/image_picker_android-0.8.13+14",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "image_picker_for_web",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/image_picker_for_web-3.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "image_picker_ios",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/image_picker_ios-0.8.13+6",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
+    },
+    {
+      "name": "image_picker_linux",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/image_picker_linux-0.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "image_picker_macos",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/image_picker_macos-0.2.2+1",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "image_picker_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/image_picker_platform_interface-2.11.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "image_picker_windows",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/image_picker_windows-0.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "intl",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/intl-0.18.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "io",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/io-1.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "js",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/js-0.7.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "json_annotation",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/json_annotation-4.11.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "latlong2",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/latlong2-0.9.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "leak_tracker",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/leak_tracker-11.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "leak_tracker_flutter_testing",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.10",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "leak_tracker_testing",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/leak_tracker_testing-3.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "lints",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/lints-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "lists",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/lists-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "logger",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/logger-2.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "logging",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/logging-1.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "lru",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/lru-1.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "matcher",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/matcher-0.12.19",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "material_color_utilities",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/material_color_utilities-0.13.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "meta",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/meta-1.17.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "mgrs_dart",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/mgrs_dart-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "mime",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/mime-1.0.6",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "mobile_scanner",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/mobile_scanner-3.5.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "mockito",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/mockito-5.4.6",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "multibase",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/multibase-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "multicast_dns",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/multicast_dns-0.3.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "native_toolchain_c",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/native_toolchain_c-0.17.6",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
+    },
+    {
+      "name": "ndef_record",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/ndef_record-1.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.11"
+    },
+    {
+      "name": "nfc_manager",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/nfc_manager-4.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "objectbox",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/objectbox-4.3.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "objectbox_flutter_libs",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/objectbox_flutter_libs-4.3.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "objective_c",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/objective_c-9.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
+    },
+    {
+      "name": "package_config",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/package_config-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "path",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/path-1.9.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "path_provider",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/path_provider-2.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "path_provider_android",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/path_provider_android-2.2.22",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "path_provider_foundation",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/path_provider_foundation-2.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
+    },
+    {
+      "name": "path_provider_linux",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/path_provider_linux-2.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "path_provider_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/path_provider_platform_interface-2.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "path_provider_windows",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/path_provider_windows-2.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "permission_handler",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/permission_handler-11.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "permission_handler_android",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/permission_handler_android-12.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "permission_handler_apple",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.7",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "permission_handler_html",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/permission_handler_html-0.1.3+5",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "permission_handler_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/permission_handler_platform_interface-4.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "permission_handler_windows",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/permission_handler_windows-0.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "petitparser",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/petitparser-7.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "platform",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/platform-3.1.6",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "plugin_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.8",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "pointycastle",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/pointycastle-3.9.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "pool",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/pool-1.5.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "posix",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/posix-6.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "proj4dart",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/proj4dart-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "protobuf",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/protobuf-3.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "pub_semver",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/pub_semver-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "pubspec_parse",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/pubspec_parse-1.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "qr",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/qr-3.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "qr_flutter",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/qr_flutter-4.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
+      "name": "riverpod",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/riverpod-2.6.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "riverpod_analyzer_utils",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/riverpod_analyzer_utils-0.5.10",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "riverpod_annotation",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/riverpod_annotation-2.6.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "riverpod_generator",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/riverpod_generator-2.6.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "rxdart",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/rxdart-0.28.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "share_plus",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/share_plus-7.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "share_plus_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/share_plus_platform_interface-3.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "shared_preferences",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/shared_preferences-2.5.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "shared_preferences_android",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/shared_preferences_android-2.4.21",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "shared_preferences_foundation",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.5.6",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "shared_preferences_linux",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/shared_preferences_linux-2.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "shared_preferences_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/shared_preferences_platform_interface-2.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "shared_preferences_web",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/shared_preferences_web-2.4.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "shared_preferences_windows",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/shared_preferences_windows-2.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "shelf",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/shelf-1.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "shelf_web_socket",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/shelf_web_socket-2.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "sky_engine",
+      "rootUri": "file:///home/whoami/snap/flutter/common/flutter/bin/cache/pkg/sky_engine",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "source_gen",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/source_gen-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "source_span",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/source_span-1.10.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "sqflite_common",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/sqflite_common-2.5.6",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "sqflite_sqlcipher",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/sqflite_sqlcipher-3.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.9"
+    },
+    {
+      "name": "stack_trace",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/stack_trace-1.12.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "state_notifier",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/state_notifier-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "stream_channel",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/stream_channel-2.1.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "stream_transform",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/stream_transform-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "string_scanner",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/string_scanner-1.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "synchronized",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/synchronized-3.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "term_glyph",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/term_glyph-1.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "test_api",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/test_api-0.7.10",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
+    },
+    {
+      "name": "timing",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/timing-1.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "typed_data",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/typed_data-1.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "unicode",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/unicode-0.3.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "url_launcher_linux",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/url_launcher_linux-3.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "url_launcher_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/url_launcher_platform_interface-2.3.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "url_launcher_web",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/url_launcher_web-2.4.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.10"
+    },
+    {
+      "name": "url_launcher_windows",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/url_launcher_windows-3.1.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "uuid",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/uuid-4.5.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "vector_math",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/vector_math-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
+      "name": "vm_service",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/vm_service-15.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "watcher",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/watcher-1.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "weak_cache",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/weak_cache-2.1.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "web",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/web-1.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "web_socket",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/web_socket-1.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "web_socket_channel",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/web_socket_channel-3.0.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "webrtc_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/webrtc_interface-1.5.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "wifi_iot",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/wifi_iot-0.3.19+2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "win32",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/win32-5.15.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "wkt_parser",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/wkt_parser-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "workmanager",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/workmanager-0.9.0+3",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "workmanager_android",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/workmanager_android-0.9.0+2",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "workmanager_apple",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/workmanager_apple-0.9.1+2",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "workmanager_platform_interface",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/workmanager_platform_interface-0.9.1+1",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
+      "name": "x25519",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/x25519-0.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "xdg_directories",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/xdg_directories-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "xml",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/xml-6.6.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.8"
+    },
+    {
+      "name": "yaml",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/yaml-3.1.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "offtalk",
+      "rootUri": "../",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    }
+  ],
+  "generator": "pub",
+  "generatorVersion": "3.11.3",
+  "flutterRoot": "file:///home/whoami/snap/flutter/common/flutter",
+  "flutterVersion": "3.41.5",
+  "pubCache": "file:///home/whoami/.pub-cache"
+}

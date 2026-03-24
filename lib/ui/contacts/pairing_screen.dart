@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:typed_data';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:nfc_manager/nfc_manager_android.dart' as android_nfc;
+import 'package:nfc_manager/nfc_manager_ios.dart' as ios_nfc;
+import 'package:ndef_record/ndef_record.dart';
 import '../../models/models.dart';
 import '../../core/database_helper.dart';
 import '../../providers/app_state_provider.dart';
@@ -16,7 +21,6 @@ class PairingScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<PairingScreen> createState() => _PairingScreenState();
 }
-
 class _PairingScreenState extends ConsumerState<PairingScreen> {
   bool _isScanning = false;
   final MobileScannerController _scannerController = MobileScannerController();
@@ -31,12 +35,19 @@ class _PairingScreenState extends ConsumerState<PairingScreen> {
   void _startNfcListening() async {
     bool isAvailable = await NfcManager.instance.isAvailable();
     if (isAvailable) {
-      NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+      NfcManager.instance.startSession(
+        pollingOptions: {NfcPollingOption.iso14443, NfcPollingOption.iso15693, NfcPollingOption.iso18092},
+        onDiscovered: (NfcTag tag) async {
         try {
-          final ndef = Ndef.from(tag);
-          if (ndef != null && ndef.cachedMessage != null) {
+          dynamic ndef;
+          if (Platform.isAndroid) {
+            ndef = android_nfc.NdefAndroid.from(tag);
+          } else if (Platform.isIOS) {
+            ndef = ios_nfc.NdefIos.from(tag);
+          }
+          if (ndef != null && ndef.cachedMessage != null && ndef.cachedMessage.records.isNotEmpty) {
             String payload =
-                utf8.decode(ndef.cachedMessage!.records.first.payload);
+                utf8.decode(ndef.cachedMessage.records.first.payload);
             _processInviteData(payload);
           }
         } catch (e) {
@@ -50,12 +61,25 @@ class _PairingScreenState extends ConsumerState<PairingScreen> {
   void _transmitNfc(String payload) async {
     bool isAvailable = await NfcManager.instance.isAvailable();
     if (isAvailable) {
-      NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-        var ndef = Ndef.from(tag);
+      NfcManager.instance.startSession(
+        pollingOptions: {NfcPollingOption.iso14443, NfcPollingOption.iso15693, NfcPollingOption.iso18092},
+        onDiscovered: (NfcTag tag) async {
+        dynamic ndef;
+        if (Platform.isAndroid) {
+          ndef = android_nfc.NdefAndroid.from(tag);
+        } else if (Platform.isIOS) {
+          ndef = ios_nfc.NdefIos.from(tag);
+        }
         if (ndef != null && ndef.isWritable) {
-          NdefMessage message =
-              NdefMessage([NdefRecord.createText(payload)]);
-          await ndef.write(message);
+          NdefMessage message = NdefMessage(records: [
+            NdefRecord(
+              typeNameFormat: TypeNameFormat.media,
+              type: Uint8List.fromList(utf8.encode('text/plain')),
+              identifier: Uint8List.fromList([]),
+              payload: Uint8List.fromList(utf8.encode(payload)),
+            )
+          ]);
+          await ndef.writeNdefMessage(message);
           NfcManager.instance.stopSession();
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(

@@ -1,0 +1,1 @@
+ /home/whoami/Downloads/meshtalk/.dart_tool/flutter_build/512bedf29506e391ae5fb6d7a07f999d/dart_build_result.json:  /home/whoami/Downloads/meshtalk/.dart_tool/package_config.json /home/whoami/Downloads/meshtalk/pubspec.yaml /home/whoami/snap/flutter/common/flutter/bin/cache/dart-sdk/version

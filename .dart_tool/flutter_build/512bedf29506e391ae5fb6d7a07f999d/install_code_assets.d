@@ -1,0 +1,1 @@
+ /home/whoami/Downloads/meshtalk/.dart_tool/flutter_build/512bedf29506e391ae5fb6d7a07f999d/native_assets.json: 
