@@ -1,0 +1,72 @@
+<?xml version="1.xml" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>$(DEVELOPMENT_LANGUAGE)</string>
+    <key>CFBundleDisplayName</key>
+    <string>OffTalk</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    <key>CFBundleIdentifier</key>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>offtalk</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>$(FLUTTER_BUILD_NAME)</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleVersion</key>
+    <string>$(FLUTTER_BUILD_NUMBER)</string>
+    <key>LSRequiresIPhoneOS</key>
+    <true/>
+    <key>UILaunchStoryboardName</key>
+    <string>LaunchScreen</string>
+    <key>UIMainStoryboardFile</key>
+    <string>Main</string>
+    
+    <!-- Bluetooth & Multipeer Connectivity -->
+    <key>NSBluetoothAlwaysUsageDescription</key>
+    <string>OffTalk requires Bluetooth to discover and connect with nearby peers even when offline.</string>
+    <key>NSBluetoothPeripheralUsageDescription</key>
+    <string>OffTalk uses Bluetooth to build the local communication mesh.</string>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>OffTalk requires access to your local network to discover peers via Wi-Fi.</string>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_offtalk._tcp</string>
+        <string>_offtalk._udp</string>
+    </array>
+    
+    <!-- Background Fetch & Processing -->
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>processing</string>
+        <string>bluetooth-central</string>
+        <string>bluetooth-peripheral</string>
+        <string>voip</string>
+    </array>
+    
+    <!-- Camera, Mic, Photos -->
+    <key>NSCameraUsageDescription</key>
+    <string>OffTalk requires camera access for video calls, capturing photos to share, and scanning QR codes for pairing.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>OffTalk requires microphone access for voice calls and sending voice notes.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>OffTalk requires photo library access to share images with your contacts.</string>
+    
+    <!-- Location (Offline Maps) -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>OffTalk requires your location to display you on the offline map and for emergency SOS broadcasting.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>OffTalk requires background location to maintain the mesh connection and broadcast SOS if triggered.</string>
+    
+    <key>UIApplicationSupportsIndirectInputEvents</key>
+    <true/>
+</dict>
+</plist>

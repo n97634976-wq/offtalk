@@ -1,0 +1,161 @@
+import 'package:sqflite_sqlcipher/sqflite.dart';
+import 'package:path/path.dart';
+import '../models/models.dart';
+
+class DatabaseHelper {
+  static final DatabaseHelper instance = DatabaseHelper._init();
+  static Database? _database;
+  
+  // Note: In production, this PIN/key should be securely retrieved from KeyStore/Keychain
+  // or generated via PBKDF2 from a user PIN.
+  String? _dbPassword;
+
+  DatabaseHelper._init();
+
+  void setPassword(String password) {
+    _dbPassword = password;
+  }
+
+  Future<Database> get database async {
+    if (_dbPassword == null) throw Exception("DB Password not set");
+    if (_database != null) return _database!;
+    _database = await _initDB('offtalk.db');
+    return _database!;
+  }
+
+  Future<Database> _initDB(String filePath) async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, filePath);
+
+    return await openDatabase(
+      path,
+      version: 1,
+      password: _dbPassword,
+      onCreate: _createDB,
+    );
+  }
+
+  Future _createDB(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE contacts (
+        id TEXT PRIMARY KEY,
+        display_name TEXT,
+        public_key BLOB,
+        session_state BLOB,
+        is_blocked INTEGER DEFAULT 0,
+        last_seen INTEGER,
+        created_at INTEGER
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE chats (
+        id TEXT PRIMARY KEY,
+        type INTEGER,
+        last_message_id TEXT,
+        unread_count INTEGER DEFAULT 0,
+        created_at INTEGER
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE chat_contacts (
+        chat_id TEXT,
+        contact_id TEXT,
+        PRIMARY KEY (chat_id, contact_id)
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE messages (
+        id TEXT PRIMARY KEY,
+        chat_id TEXT,
+        sender_id TEXT,
+        encrypted_payload BLOB,
+        timestamp INTEGER,
+        direction INTEGER,
+        delivery_status INTEGER,
+        media_path TEXT,
+        media_type TEXT,
+        ttl INTEGER
+      )
+    ''');
+  }
+
+  // Contact Operations
+  Future<void> insertContact(Contact contact) async {
+    final db = await instance.database;
+    await db.insert('contacts', contact.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+  
+  Future<Contact?> getContact(String id) async {
+    final db = await instance.database;
+    final maps = await db.query('contacts', where: 'id = ?', whereArgs: [id]);
+    if (maps.isNotEmpty) {
+      return Contact(
+        phoneNumber: maps.first['id'] as String,
+        displayName: maps.first['display_name'] as String,
+        publicKey: maps.first['public_key'] as dynamic,
+        sessionState: maps.first['session_state'] as dynamic,
+        lastSeen: maps.first['last_seen'] as int,
+        isBlocked: maps.first['is_blocked'] as int,
+      );
+    }
+    return null;
+  }
+
+  Future<List<Contact>> getAllContacts() async {
+    final db = await instance.database;
+    final maps = await db.query('contacts');
+    return maps.map((c) => Contact(
+      phoneNumber: c['id'] as String,
+      displayName: c['display_name'] as String,
+      publicKey: c['public_key'] as dynamic,
+      sessionState: c['session_state'] as dynamic,
+      lastSeen: c['last_seen'] as int,
+      isBlocked: c['is_blocked'] as int,
+    )).toList();
+  }
+
+  Future<void> updateContactSession(String id, dynamic sessionState) async {
+    final db = await instance.database;
+    await db.update('contacts', {'session_state': sessionState}, where: 'id = ?', whereArgs: [id]);
+  }
+
+  // Chat Operations
+  Future<void> insertChat(Chat chat) async {
+    final db = await instance.database;
+    await db.insert('chats', chat.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<List<Chat>> getAllChats() async {
+    final db = await instance.database;
+    final maps = await db.query('chats', orderBy: 'created_at DESC');
+    return maps.map((c) => Chat(
+      id: c['id'] as String,
+      type: c['type'] as int,
+      lastMessageId: c['last_message_id'] as String?,
+      unreadCount: c['unread_count'] as int,
+      createdAt: c['created_at'] as int,
+    )).toList();
+  }
+
+  // Message Operations
+  // Note: the encrypted_payload must be provided by the KeyManager layer
+  Future<void> insertMessage(Message msg, dynamic encryptedPayload) async {
+    final db = await instance.database;
+    final map = msg.toMap();
+    map['encrypted_payload'] = encryptedPayload;
+    await db.insert('messages', map, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<List<Map<String, dynamic>>> getMessagesForChat(String chatId) async {
+    final db = await instance.database;
+    return await db.query('messages', where: 'chat_id = ?', whereArgs: [chatId], orderBy: 'timestamp ASC');
+  }
+
+  Future<void> updateMessageStatus(String id, int status) async {
+    final db = await instance.database;
+    await db.update('messages', {'delivery_status': status}, where: 'id = ?', whereArgs: [id]);
+  }
+}

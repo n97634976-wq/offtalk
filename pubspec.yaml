@@ -1,0 +1,73 @@
+name: offtalk
+description: Peer-to-peer, offline-first mesh messaging app
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State Management
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+  
+  # Local Storage & Encryption
+  sqflite_sqlcipher: ^3.1.0+1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  themis: ^0.14.0
+  
+  # Mesh & Network
+  flutter_blue_plus: ^1.15.5
+  wifi_iot: ^0.3.18
+  libp2p: ^0.2.0           # Libp2p Dart implementation
+  flutter_webrtc: ^0.10.3
+  dio: ^5.4.0
+  
+  # Media & Files
+  image_picker: ^1.0.7
+  flutter_sound: ^9.2.13
+  image: ^4.1.4            # Image compression
+  file_picker: ^6.1.1
+  
+  # QR, Sharing, & Permissions
+  permission_handler: ^11.2.0
+  mobile_scanner: ^3.5.5
+  qr_flutter: ^4.1.0
+  share_plus: ^7.2.1
+  nfc_manager: ^3.3.0
+  
+  # UI & Map
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.0
+  flutter_map_tile_caching: ^10.1.0
+  geolocator: ^11.0.0
+  intl: ^0.18.1
+  
+  # Background Services
+  workmanager: ^0.5.2
+  background_fetch: ^1.1.3
+  flutter_foreground_task: ^6.1.2
+  
+  # Utils
+  uuid: ^4.3.3
+  logger: ^2.0.2
+  collection: ^1.18.0
+  path: ^1.8.3
+  crypto: ^3.0.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.7
+  riverpod_generator: ^2.3.9
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/sounds/
