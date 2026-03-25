@@ -3,6 +3,7 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:pointycastle/pointycastle.dart' as pc;
+import 'package:cryptography/cryptography.dart';
 import 'database_helper.dart';
 
 /// ─── PUBLIC KEY ENCRYPTION EXPLAINED ───────────────────────────────────────
@@ -25,23 +26,18 @@ import 'database_helper.dart';
 /// ────────────────────────────────────────────────────────────────────────────
 
 class Keypair {
-  final _Key privateKey;
-  final _Key publicKey;
+  final Uint8List privateKey;
+  final Uint8List publicKey;
   Keypair(this.privateKey, this.publicKey);
 
-  /// Generate a new asymmetric key pair.
-  /// In production, replace with a proper ECDH key pair (e.g. X25519).
-  static Keypair generate() {
-    final rng = Random.secure();
-    final priv = Uint8List.fromList(List.generate(32, (_) => rng.nextInt(256)));
-    final pub = Uint8List.fromList(List.generate(32, (_) => rng.nextInt(256)));
-    return Keypair(_Key(priv), _Key(pub));
+  /// Generate a new ED25519 key pair for signing and encrypting.
+  static Future<Keypair> generate() async {
+    final algorithm = X25519();
+    final keyPair = await algorithm.newKeyPair();
+    final pubKey = await keyPair.extractPublicKey();
+    final privKey = await keyPair.extractPrivateKeyBytes();
+    return Keypair(Uint8List.fromList(privKey), Uint8List.fromList(pubKey.bytes));
   }
-}
-
-class _Key {
-  final Uint8List bytes;
-  _Key(this.bytes);
 }
 
 class KeyManager {
@@ -53,6 +49,8 @@ class KeyManager {
   late String _myId;             // Phone number — acts as the user's identity
   
   bool _initialized = false;
+  
+  // Secure Sessions cache removed because it wasn't used and caused compilation error
 
   void init(String id, Uint8List privateKeyBytes, Uint8List publicKeyBytes) {
     _myId = id;
@@ -68,8 +66,8 @@ class KeyManager {
   Uint8List get myPublicKeyBytes => _myPublicKey;
 
   /// Generate a new key pair for the user
-  static Keypair generateKeyPair() {
-    return Keypair.generate();
+  static Future<Keypair> generateKeyPair() async {
+    return await Keypair.generate();
   }
 
   // ─── PBKDF2 PIN-based key derivation ────────────────────────────────
@@ -91,78 +89,93 @@ class KeyManager {
 
   // --- Secure Session (P2P Forward Secrecy encryption) ---
 
-  /// Basic XOR encryption for the PoC since Themis is unavailable
-  Uint8List _xorPayload(Uint8List payload, Uint8List key) {
-    if (key.isEmpty) return payload;
-    final result = Uint8List(payload.length);
-    for (int i = 0; i < payload.length; i++) {
-      result[i] = payload[i] ^ key[i % key.length];
-    }
-    return result;
+  Future<SecretKey> _getSharedSecret(String contactId) async {
+    final contact = await DatabaseHelper.instance.getContact(contactId);
+    if (contact == null) throw Exception("Contact not found");
+
+    final algorithm = X25519();
+    final myKeyPair = SimpleKeyPairData(_myPrivateKey, 
+      publicKey: SimplePublicKey(_myPublicKey, type: KeyPairType.x25519), 
+      type: KeyPairType.x25519);
+    final peerPublicKey = SimplePublicKey(contact.publicKey, type: KeyPairType.x25519);
+
+    return await algorithm.sharedSecretKey(keyPair: myKeyPair, remotePublicKey: peerPublicKey);
   }
 
-  /// Encrypt a message for a specific contact using Secure Session
+  /// Encrypt a message for a specific contact using X25519 ECDH + AES-GCM
   Future<Uint8List> encryptMessage(String contactId, Uint8List payload) async {
     if (!_initialized) throw Exception("KeyManager not initialized");
+    final sharedSecret = await _getSharedSecret(contactId);
     
-    final contact = await DatabaseHelper.instance.getContact(contactId);
-    if (contact == null) throw Exception("Contact not found");
-
-    // Mock encryption logic using XOR with public key
-    final encrypted = _xorPayload(payload, contact.publicKey);
-    return encrypted;
+    final algorithm = AesGcm.with256bits();
+    final secretBox = await algorithm.encrypt(
+      payload,
+      secretKey: sharedSecret,
+    );
+    return secretBox.concatenation();
   }
 
-  /// Decrypt a message from a specific contact using Secure Session
+  /// Decrypt a message from a specific contact using X25519 ECDH + AES-GCM
   Future<Uint8List> decryptMessage(String contactId, Uint8List encryptedPayload) async {
     if (!_initialized) throw Exception("KeyManager not initialized");
+    final sharedSecret = await _getSharedSecret(contactId);
     
-    final contact = await DatabaseHelper.instance.getContact(contactId);
-    if (contact == null) throw Exception("Contact not found");
-
-    // Mock decryption logic using XOR with public key
-    final decrypted = _xorPayload(encryptedPayload, contact.publicKey);
-    return decrypted;
+    final algorithm = AesGcm.with256bits();
+    final secretBox = SecretBox.fromConcatenation(
+      encryptedPayload,
+      nonceLength: algorithm.nonceLength,
+      macLength: algorithm.macAlgorithm.macLength,
+    );
+    return Uint8List.fromList(await algorithm.decrypt(secretBox, secretKey: sharedSecret));
   }
 
   // --- Handshake Helpers (Since Secure Session needs back-and-forth) ---
   
   /// Create initial connection request to establish a Session
   Future<Uint8List> buildConnectRequest(String contactId) async {
-    final contact = await DatabaseHelper.instance.getContact(contactId);
-    if (contact == null) throw Exception("Contact not found");
     return Uint8List.fromList(utf8.encode('CONNECT_REQUEST:\$_myId'));
   }
 
   /// Process incoming negotiation packet
   Future<Uint8List?> processHandshakeOrDecrypt(String contactId, Uint8List incomingPacket) async {
-    final contact = await DatabaseHelper.instance.getContact(contactId);
-    if (contact == null) throw Exception("Contact not found");
-    
     final packetStr = String.fromCharCodes(incomingPacket);
     if (packetStr.startsWith('CONNECT_REQUEST:')) {
-      // Mock response
       return Uint8List.fromList(utf8.encode('CONNECT_RESPONSE:\$_myId'));
     } else if (packetStr.startsWith('CONNECT_RESPONSE:')) {
-      // Handshake complete
       return null;
     }
-    
-    // Normal payload
     return decryptMessage(contactId, incomingPacket);
   }
 
   // --- Secure Cell (Symmetric encryption e.g. for group keys or DB payloads) ---
 
   /// Encrypt data with a symmetric passphrase (e.g. user PIN derived key)
-  Uint8List symmetricEncrypt(String password, Uint8List payload) {
-    final key = utf8.encode(password);
-    return _xorPayload(payload, Uint8List.fromList(key));
+  Future<Uint8List> symmetricEncrypt(String password, Uint8List payload) async {
+    if (payload.isEmpty) return payload;
+    
+    // Derive a strong 256-bit key using PBKDF2
+    final salt = Uint8List.fromList('OffTalkSymmetricSalt'.codeUnits);
+    final keyBytes = deriveKeyFromPin(password, salt, iterations: 1000);
+    
+    final algorithm = AesGcm.with256bits();
+    final secretKey = SecretKey(keyBytes);
+    final secretBox = await algorithm.encrypt(payload, secretKey: secretKey);
+    return secretBox.concatenation();
   }
 
   /// Decrypt data with symmetric passphrase
-  Uint8List symmetricDecrypt(String password, Uint8List encryptedData) {
-    final key = utf8.encode(password);
-    return _xorPayload(encryptedData, Uint8List.fromList(key));
+  Future<Uint8List> symmetricDecrypt(String password, Uint8List encryptedData) async {
+    if (encryptedData.isEmpty) return encryptedData;
+    
+    final salt = Uint8List.fromList('OffTalkSymmetricSalt'.codeUnits);
+    final keyBytes = deriveKeyFromPin(password, salt, iterations: 1000);
+    
+    final algorithm = AesGcm.with256bits();
+    final secretBox = SecretBox.fromConcatenation(
+      encryptedData,
+      nonceLength: algorithm.nonceLength,
+      macLength: algorithm.macAlgorithm.macLength,
+    );
+    return Uint8List.fromList(await algorithm.decrypt(secretBox, secretKey: SecretKey(keyBytes)));
   }
 }

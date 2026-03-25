@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 class Packet {
@@ -5,6 +6,7 @@ class Packet {
   final String sourceId;
   final String destinationId;
   final Uint8List payload;
+  final Uint8List? senderPublicKey;
   int ttl;
   final int timestamp;
   final List<String> path;
@@ -14,6 +16,7 @@ class Packet {
     required this.sourceId,
     required this.destinationId,
     required this.payload,
+    this.senderPublicKey,
     this.ttl = 5,
     required this.timestamp,
     this.path = const [],
@@ -24,6 +27,7 @@ class Packet {
     'sourceId': sourceId,
     'destinationId': destinationId,
     'payload': payload,
+    if (senderPublicKey != null) 'senderPublicKey': senderPublicKey,
     'ttl': ttl,
     'timestamp': timestamp,
     'path': path,
@@ -33,7 +37,10 @@ class Packet {
     id: json['id'],
     sourceId: json['sourceId'],
     destinationId: json['destinationId'],
-    payload: json['payload'] is Uint8List ? json['payload'] : Uint8List.fromList(List<int>.from(json['payload'])),
+    payload: json['payload'] is String ? base64Decode(json['payload']) : Uint8List.fromList(List<int>.from(json['payload'])),
+    senderPublicKey: json['senderPublicKey'] != null 
+        ? (json['senderPublicKey'] is String ? base64Decode(json['senderPublicKey']) : Uint8List.fromList(List<int>.from(json['senderPublicKey']))) 
+        : null,
     ttl: json['ttl'],
     timestamp: json['timestamp'],
     path: List<String>.from(json['path'] ?? []),

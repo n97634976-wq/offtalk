@@ -238,15 +238,7 @@ class _PairingScreenState extends ConsumerState<PairingScreen> {
       await DatabaseHelper.instance.insertContact(contact);
 
       // 2. Create a direct chat for this contact so the user can start messaging
-      final chatId = const Uuid().v4();
-      final chat = Chat(
-        id: chatId,
-        type: 0, // direct
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-      );
-      await DatabaseHelper.instance.insertChat(chat);
-      // Link contact to the chat
-      await DatabaseHelper.instance.linkContactToChat(chatId, phone);
+      final chatId = await DatabaseHelper.instance.getOrCreateDirectChat(phone);
 
       // 3. Invalidate providers so lists refresh immediately
       ref.invalidate(contactsProvider);
@@ -265,7 +257,7 @@ class _PairingScreenState extends ConsumerState<PairingScreen> {
           context,
           MaterialPageRoute(
             builder: (_) => ChatScreen(
-              chatId: phone,
+              chatId: chatId,
               contactName: contact.displayName,
             ),
           ),

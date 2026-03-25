@@ -368,6 +368,12 @@
       "languageVersion": "3.9"
     },
     {
+      "name": "flutter_ble_peripheral",
+      "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_ble_peripheral-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "flutter_blue_plus",
       "rootUri": "file:///home/whoami/.pub-cache/hosted/pub.dev/flutter_blue_plus-1.36.8",
       "packageUri": "lib/",

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:local_auth/local_auth.dart';
 import '../../providers/app_state_provider.dart';
 import '../../core/hive_helper.dart';
+import '../../services/sim_service.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -26,7 +27,36 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   void initState() {
     super.initState();
     _checkLockoutState();
+    _verifySim();
     _checkBiometric();
+  }
+
+  Future<void> _verifySim() async {
+    final profile = HiveHelper.instance.getSetting('profile');
+    if (profile == null) return;
+    final phone = profile['phoneNumber'];
+    final storedProof = profile['simProof'];
+    if (phone == null || storedProof == null) return;
+    
+    try {
+      final isValid = await SimService.instance.verifyLocalSimProof(phone, storedProof);
+      if (!isValid && mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => AlertDialog(
+            title: const Text("Identity Mismatch"),
+            content: const Text("The hardware identity bound to this account has changed. For security, you must use the original device/SIM or reinstall the app to register anew."),
+            actions: [
+              TextButton(
+                onPressed: () => SystemNavigator.pop(),
+                child: const Text("Exit App"),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (_) {}
   }
 
   @override

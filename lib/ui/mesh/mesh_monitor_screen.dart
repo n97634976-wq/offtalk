@@ -1,64 +1,16 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../core/hive_helper.dart';
-import '../../network/bluetooth_manager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../providers/mesh_status_provider.dart';
 
-class MeshMonitorScreen extends StatefulWidget {
+class MeshMonitorScreen extends ConsumerWidget {
   const MeshMonitorScreen({super.key});
 
   @override
-  State<MeshMonitorScreen> createState() => _MeshMonitorScreenState();
-}
-
-class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
-  List<MapEntry<String, dynamic>> _routes = [];
-  List<dynamic> _pendingPackets = [];
-  int _connectedPeers = 0;
-  int _discoveredPeers = 0;
-  bool _isRefreshing = false;
-  Timer? _autoRefreshTimer;
-
-  @override
-  void initState() {
-    super.initState();
-    _refresh();
-    // Auto-refresh every 3 seconds to keep dashboard live
-    _autoRefreshTimer = Timer.periodic(const Duration(seconds: 3), (_) => _refresh());
-  }
-
-  @override
-  void dispose() {
-    _autoRefreshTimer?.cancel();
-    super.dispose();
-  }
-
-  Future<void> _refresh() async {
-    if (_isRefreshing) return;
-    setState(() => _isRefreshing = true);
-    try {
-      final routes = HiveHelper.instance.getAllRoutes();
-      final pending = HiveHelper.instance.getPendingQueue();
-      final peers = BluetoothManager.instance;
-
-      setState(() {
-        _routes = routes;
-        _pendingPackets = pending;
-        _connectedPeers = peers.connectedPeerCount;
-        _discoveredPeers = peers.discoveredPeerCount;
-        _isRefreshing = false;
-      });
-    } catch (_) {
-      setState(() => _isRefreshing = false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final status = ref.watch(meshStatusProvider);
 
-    return RefreshIndicator(
-      onRefresh: _refresh,
-      child: ListView(
+    return ListView(
         padding: const EdgeInsets.all(16),
         children: [
           // Status Cards Row
@@ -68,8 +20,8 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
                 child: _StatusCard(
                   icon: Icons.bluetooth_connected,
                   label: "BLE Peers",
-                  value: "$_connectedPeers",
-                  color: _connectedPeers > 0 ? Colors.green : Colors.grey,
+                  value: "${status.connectedPeers}",
+                  color: status.connectedPeers > 0 ? Colors.green : Colors.grey,
                 ),
               ),
               const SizedBox(width: 12),
@@ -77,8 +29,8 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
                 child: _StatusCard(
                   icon: Icons.route,
                   label: "Routes",
-                  value: "${_routes.length}",
-                  color: _routes.isNotEmpty ? Colors.blue : Colors.grey,
+                  value: "${status.routeCount}",
+                  color: status.routeCount > 0 ? Colors.blue : Colors.grey,
                 ),
               ),
               const SizedBox(width: 12),
@@ -86,8 +38,8 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
                 child: _StatusCard(
                   icon: Icons.pending_actions,
                   label: "Queued",
-                  value: "${_pendingPackets.length}",
-                  color: _pendingPackets.isNotEmpty ? Colors.orange : Colors.grey,
+                  value: "${status.pendingCount}",
+                  color: status.pendingCount > 0 ? Colors.orange : Colors.grey,
                 ),
               ),
             ],
@@ -107,23 +59,23 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
                 Row(
                   children: [
                     Icon(Icons.wifi_tethering,
-                        color: _connectedPeers > 0 ? Colors.green : Colors.red),
+                        color: status.connectedPeers > 0 ? Colors.green : Colors.red),
                     const SizedBox(width: 8),
                     Text(
-                      _connectedPeers > 0
-                          ? "Mesh Active — $_connectedPeers peer${_connectedPeers == 1 ? '' : 's'}"
+                      status.connectedPeers > 0
+                          ? "Mesh Active — ${status.connectedPeers} peer${status.connectedPeers == 1 ? '' : 's'}"
                           : "No Mesh Peers Found",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: _connectedPeers > 0 ? Colors.green : Colors.red,
+                        color: status.connectedPeers > 0 ? Colors.green : Colors.red,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  _connectedPeers > 0
+                  status.connectedPeers > 0
                       ? "Messages will be routed through the mesh network."
                       : "Enable Bluetooth and be near other OffTalk users to form a mesh.",
                   style: TextStyle(color: Colors.grey[600], fontSize: 13),
@@ -137,7 +89,7 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
           Text("Routing Table",
               style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          if (_routes.isEmpty)
+          if (status.routeCount == 0)
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
@@ -150,8 +102,8 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
               ),
             )
           else
-            ...List.generate(_routes.length, (i) {
-              final route = _routes[i];
+            ...List.generate(status.routeCount, (i) {
+              final route = status.routes[i];
               return Card(
                 child: ListTile(
                   leading: const Icon(Icons.device_hub),
@@ -173,7 +125,7 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
           Text("Pending Queue (Store & Forward)",
               style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          if (_pendingPackets.isEmpty)
+          if (status.pendingCount == 0)
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
@@ -186,8 +138,8 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
               ),
             )
           else
-            ...List.generate(_pendingPackets.length, (i) {
-              final pkt = _pendingPackets[i];
+            ...List.generate(status.pendingCount, (i) {
+              final pkt = status.pendingPackets[i];
               return Card(
                 child: ListTile(
                   leading: const Icon(Icons.outbox, color: Colors.orange),
@@ -198,8 +150,7 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
               );
             }),
         ],
-      ),
-    );
+      );
   }
 }
 

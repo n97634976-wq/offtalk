@@ -31,6 +31,7 @@ class PacketRouter {
       sourceId: _myId!,
       destinationId: destinationId,
       payload: encryptedPayload,
+      senderPublicKey: KeyManager.instance.myPublicKeyBytes, // Include PK so recipient can reply if they don't have us
       ttl: 5,
       timestamp: DateTime.now().millisecondsSinceEpoch,
       path: [_myId!],
@@ -101,6 +102,19 @@ class PacketRouter {
   /// Decrypt the received packet and store the message in the local DB.
   Future<void> _deliverPayload(Packet packet) async {
     try {
+      // Auto-save unknown contact if public key is provided
+      if (packet.senderPublicKey != null) {
+        final existingContact = await DatabaseHelper.instance.getContact(packet.sourceId);
+        if (existingContact == null) {
+          await DatabaseHelper.instance.insertContact(Contact(
+            phoneNumber: packet.sourceId,
+            displayName: packet.sourceId, // Use phone number as temporary name
+            publicKey: packet.senderPublicKey!,
+            lastSeen: DateTime.now().millisecondsSinceEpoch,
+          ));
+        }
+      }
+
       // Decrypt the payload using the sender's public key via KeyManager
       final decryptedBytes = await KeyManager.instance.decryptMessage(
         packet.sourceId,
@@ -143,7 +157,15 @@ class PacketRouter {
   }
 
   Uint8List _serializePacket(Packet p) {
-    return Uint8List.fromList(utf8.encode(jsonEncode(p.toJson())));
+    // encode buffers efficiently
+    final map = p.toJson();
+    if (map['payload'] is Uint8List) {
+      map['payload'] = base64Encode(map['payload'] as Uint8List);
+    }
+    if (map['senderPublicKey'] is Uint8List) {
+      map['senderPublicKey'] = base64Encode(map['senderPublicKey'] as Uint8List);
+    }
+    return Uint8List.fromList(utf8.encode(jsonEncode(map)));
   }
 
   Packet _deserializePacket(Uint8List data) {

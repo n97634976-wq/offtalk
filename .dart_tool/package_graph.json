@@ -10,12 +10,14 @@
         "background_fetch",
         "collection",
         "crypto",
+        "cryptography",
         "dart_libp2p",
         "dart_libp2p_kad_dht",
         "dio",
         "emoji_picker_flutter",
         "file_picker",
         "flutter",
+        "flutter_ble_peripheral",
         "flutter_blue_plus",
         "flutter_foreground_task",
         "flutter_map",
@@ -146,6 +148,25 @@
         "stream_channel",
         "test_api",
         "vector_math"
+      ]
+    },
+    {
+      "name": "cryptography",
+      "version": "2.9.0",
+      "dependencies": [
+        "collection",
+        "crypto",
+        "ffi",
+        "meta",
+        "typed_data"
+      ]
+    },
+    {
+      "name": "flutter_ble_peripheral",
+      "version": "2.1.0",
+      "dependencies": [
+        "flutter",
+        "json_annotation"
       ]
     },
     {
@@ -1014,6 +1035,18 @@
       ]
     },
     {
+      "name": "typed_data",
+      "version": "1.4.0",
+      "dependencies": [
+        "collection"
+      ]
+    },
+    {
+      "name": "ffi",
+      "version": "2.2.0",
+      "dependencies": []
+    },
+    {
       "name": "url_launcher_windows",
       "version": "3.1.5",
       "dependencies": [
@@ -1136,13 +1169,6 @@
       "version": "0.0.0",
       "dependencies": [
         "flutter"
-      ]
-    },
-    {
-      "name": "typed_data",
-      "version": "1.4.0",
-      "dependencies": [
-        "collection"
       ]
     },
     {
@@ -1302,11 +1328,6 @@
       "dependencies": [
         "ffi"
       ]
-    },
-    {
-      "name": "ffi",
-      "version": "2.2.0",
-      "dependencies": []
     },
     {
       "name": "file",
@@ -1649,17 +1670,6 @@
       "version": "1.0.2",
       "dependencies": [
         "base_x"
-      ]
-    },
-    {
-      "name": "cryptography",
-      "version": "2.9.0",
-      "dependencies": [
-        "collection",
-        "crypto",
-        "ffi",
-        "meta",
-        "typed_data"
       ]
     },
     {

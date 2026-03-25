@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:flutter_ble_peripheral/flutter_ble_peripheral.dart';
 import '../core/hive_helper.dart';
 
 /// Manages Bluetooth LE discovery and GATT connections for the mesh network.
@@ -45,13 +47,29 @@ class BluetoothManager {
     ));
   }
 
+  final FlutterBlePeripheral _blePeripheral = FlutterBlePeripheral();
+  
   String? _myNetworkId;
+  Uint8List? _myPublicKey;
   bool _isScanning = false;
+  bool _isAdvertising = false;
 
   Future<void> init() async {
     final profile = HiveHelper.instance.getSetting('profile');
     if (profile == null) return;
     _myNetworkId = profile['phoneNumber'];
+    if (profile['publicKey'] != null) {
+      _myPublicKey = Uint8List.fromList(List<int>.from(profile['publicKey']));
+    }
+
+    // Request all required runtime permissions for BLE Mesh
+    await [
+      Permission.bluetooth,
+      Permission.bluetoothAdvertise,
+      Permission.bluetoothConnect,
+      Permission.bluetoothScan,
+      Permission.location,
+    ].request();
 
     // Check if Bluetooth is supported
     if (await FlutterBluePlus.isSupported == false) {
@@ -65,6 +83,9 @@ class BluetoothManager {
     } catch (_) {
       // iOS doesn't support turnOn; user must enable manually
     }
+    
+    // Start advertising our presence
+    _startAdvertising();
 
     var state = await FlutterBluePlus.adapterState.first;
     if (state == BluetoothAdapterState.on) {
@@ -73,9 +94,49 @@ class BluetoothManager {
       FlutterBluePlus.adapterState.listen((state) {
         if (state == BluetoothAdapterState.on) {
           _startScanning();
+          _startAdvertising();
+        } else {
+          _stopAdvertising();
         }
       });
     }
+  }
+
+  Future<void> _startAdvertising() async {
+    if (_isAdvertising || _myNetworkId == null || _myPublicKey == null) return;
+    try {
+      final isSupported = await _blePeripheral.isSupported;
+      if (!isSupported) {
+         print("BLE Peripheral mode not supported");
+         return;
+      }
+      
+      // We encode the phone hash (first 4 bytes) and public key hash (next 4 bytes)
+      int phoneHash = _myNetworkId.hashCode;
+      int pubKeyHash = _myPublicKey.hashCode;
+      final manufacturerData = ByteData(8);
+      manufacturerData.setInt32(0, phoneHash);
+      manufacturerData.setInt32(4, pubKeyHash);
+
+      final advertiseData = AdvertiseData(
+        serviceUuid: _serviceUuid,
+        manufacturerId: 0x004C, // Apple manufacturer ID for broadest support/parsing, or custom
+        manufacturerData: manufacturerData.buffer.asUint8List(),
+      );
+
+      await _blePeripheral.start(advertiseData: advertiseData);
+      _isAdvertising = true;
+    } catch (e) {
+      print("Failed to start advertising: $e");
+    }
+  }
+  
+  Future<void> _stopAdvertising() async {
+    if (!_isAdvertising) return;
+    try {
+      await _blePeripheral.stop();
+      _isAdvertising = false;
+    } catch (_) {}
   }
 
   void _startScanning() {
@@ -202,6 +263,7 @@ class BluetoothManager {
   /// Disconnect and clean up all BLE resources
   void dispose() {
     stopScanning();
+    _stopAdvertising();
     for (var device in _connectedPeers.values) {
       try {
         device.disconnect();

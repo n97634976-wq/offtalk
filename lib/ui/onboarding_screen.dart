@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:local_auth/local_auth.dart';
 import '../core/hive_helper.dart';
 import '../core/database_helper.dart';
 import '../core/key_manager.dart';
@@ -113,7 +114,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     }
 
     // Generate keys
-    final keypair = KeyManager.generateKeyPair();
+    final keypair = await KeyManager.generateKeyPair();
     final hashedPin = AuthNotifier.hashPin(pin);
 
     final profile = {
@@ -121,8 +122,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       'displayName': name,
       'pin': hashedPin,
       'simProof': simProof,
-      'privateKey': keypair.privateKey.bytes.toList(),
-      'publicKey': keypair.publicKey.bytes.toList(),
+      'privateKey': keypair.privateKey.toList(),
+      'publicKey': keypair.publicKey.toList(),
       'createdAt': DateTime.now().millisecondsSinceEpoch,
     };
 
@@ -133,7 +134,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     await NumberRegistry.instance.registerNumber(
       phoneNumber: phone,
       simProof: simProof,
-      publicKey: Uint8List.fromList(keypair.publicKey.bytes.toList()),
+      publicKey: keypair.publicKey,
     );
 
     // Init DB password (use raw PIN for SQLCipher)
@@ -141,8 +142,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     // Init KeyManager
     KeyManager.instance.init(
       phone,
-      keypair.privateKey.bytes,
-      keypair.publicKey.bytes,
+      keypair.privateKey,
+      keypair.publicKey,
     );
 
     setState(() => _isLoading = false);
@@ -150,10 +151,42 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     ref.read(authStateProvider.notifier).onboardingComplete();
 
     if (context.mounted) {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const HomeScreen()),
-        (route) => false,
-      );
+      // Ask for Biometric Unlock if supported
+      try {
+        final localAuth = LocalAuthentication();
+        final canCheck = await localAuth.canCheckBiometrics;
+        final isSupported = await localAuth.isDeviceSupported();
+        if (canCheck && isSupported && context.mounted) {
+           final enableBiometrics = await showDialog<bool>(
+             context: context,
+             builder: (_) => AlertDialog(
+               title: const Text("Enable Biometric Unlock?"),
+               content: const Text("Would you like to unlock OffTalk using your fingerprint or Face ID instead of typing your PIN every time?"),
+               actions: [
+                 TextButton(
+                   onPressed: () => Navigator.pop(context, false),
+                   child: const Text("No thanks"),
+                 ),
+                 TextButton(
+                   onPressed: () => Navigator.pop(context, true),
+                   child: const Text("Yes, Enable"),
+                 ),
+               ],
+             ),
+           );
+           if (enableBiometrics == true) {
+             await HiveHelper.instance.setSetting('biometricEnabled', true);
+             await HiveHelper.instance.setSetting('biometric_pin', pin); // store raw pin for unlocking later
+           }
+        }
+      } catch (_) {}
+
+      if (context.mounted) {
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          (route) => false,
+        );
+      }
     }
   }
 

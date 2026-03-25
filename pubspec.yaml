@@ -64,6 +64,8 @@ dependencies:
   emoji_picker_flutter: ^4.4.0
   local_auth: ^2.3.0
   url_launcher: ^6.2.5
+  flutter_ble_peripheral: ^2.1.0
+  cryptography: ^2.9.0
 
 dev_dependencies:
   flutter_test:
