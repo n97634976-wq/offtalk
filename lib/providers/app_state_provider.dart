@@ -123,11 +123,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     _lockoutUntil = null;
     _persistLockoutState();
 
-    // If PIN was stored in plain text (legacy), upgrade to hashed
-    if (storedPin == pin && storedPin != inputHash) {
-      profile['pin'] = inputHash;
-      HiveHelper.instance.setSetting('profile', profile);
-    }
+    // Store raw PIN for biometric unlock (secured by Hive encryption)
+    HiveHelper.instance.setSetting('biometric_pin', pin);
 
     // PIN is correct, unlock DB and KeyManager
     DatabaseHelper.instance.setPassword(pin);

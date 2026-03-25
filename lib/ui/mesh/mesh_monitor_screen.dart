@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../core/hive_helper.dart';
 import '../../network/bluetooth_manager.dart';
@@ -13,15 +14,26 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
   List<MapEntry<String, dynamic>> _routes = [];
   List<dynamic> _pendingPackets = [];
   int _connectedPeers = 0;
+  int _discoveredPeers = 0;
   bool _isRefreshing = false;
+  Timer? _autoRefreshTimer;
 
   @override
   void initState() {
     super.initState();
     _refresh();
+    // Auto-refresh every 3 seconds to keep dashboard live
+    _autoRefreshTimer = Timer.periodic(const Duration(seconds: 3), (_) => _refresh());
+  }
+
+  @override
+  void dispose() {
+    _autoRefreshTimer?.cancel();
+    super.dispose();
   }
 
   Future<void> _refresh() async {
+    if (_isRefreshing) return;
     setState(() => _isRefreshing = true);
     try {
       final routes = HiveHelper.instance.getAllRoutes();
@@ -32,6 +44,7 @@ class _MeshMonitorScreenState extends State<MeshMonitorScreen> {
         _routes = routes;
         _pendingPackets = pending;
         _connectedPeers = peers.connectedPeerCount;
+        _discoveredPeers = peers.discoveredPeerCount;
         _isRefreshing = false;
       });
     } catch (_) {

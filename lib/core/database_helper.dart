@@ -71,6 +71,7 @@ class DatabaseHelper {
         id TEXT PRIMARY KEY,
         chat_id TEXT,
         sender_id TEXT,
+        plain_text TEXT,
         encrypted_payload BLOB,
         timestamp INTEGER,
         direction INTEGER,
@@ -175,10 +176,13 @@ class DatabaseHelper {
   }
 
   // Message Operations
-  // Note: the encrypted_payload must be provided by the KeyManager layer
+  // Store both the plaintext (for local display) and the encrypted payload.
+  // The plaintext is stored locally and never transmitted; only encrypted
+  // payloads travel over the mesh network.
   Future<void> insertMessage(Message msg, dynamic encryptedPayload) async {
     final db = await instance.database;
     final map = msg.toMap();
+    map['plain_text'] = msg.text;
     map['encrypted_payload'] = encryptedPayload;
     await db.insert('messages', map, conflictAlgorithm: ConflictAlgorithm.replace);
   }

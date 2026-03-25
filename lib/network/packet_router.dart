@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import '../models/models.dart';
 import '../core/hive_helper.dart';
 import '../core/database_helper.dart';
+import '../core/key_manager.dart';
 import 'bluetooth_manager.dart';
 import 'package:uuid/uuid.dart';
 
@@ -11,6 +12,9 @@ class PacketRouter {
   PacketRouter._init();
 
   String? _myId;
+
+  /// Callback the UI can register to be notified when a message arrives
+  static Function(String chatId)? onMessageReceived;
 
   void init(String myId) {
     _myId = myId;
@@ -90,16 +94,43 @@ class PacketRouter {
         }
       }
     } catch (e) {
-      print("Failed to route incoming packet: \$e");
+      print("Failed to route incoming packet: $e");
     }
   }
 
+  /// Decrypt the received packet and store the message in the local DB.
   Future<void> _deliverPayload(Packet packet) async {
-    // A real implementation would pass this up to a MessageHandler
-    // which handles decryption via KeyManager and DB insertion.
-    print("Received packet from \${packet.sourceId}");
-    // We would insert into DB to trigger UI updates:
-    // await DatabaseHelper.instance.insertMessage(...)
+    try {
+      // Decrypt the payload using the sender's public key via KeyManager
+      final decryptedBytes = await KeyManager.instance.decryptMessage(
+        packet.sourceId,
+        packet.payload,
+      );
+      final plaintext = utf8.decode(decryptedBytes);
+
+      final msg = Message(
+        id: packet.id,
+        chatId: packet.sourceId, // In direct chats, chatId = sender's phone
+        senderId: packet.sourceId,
+        text: plaintext,
+        timestamp: packet.timestamp,
+        direction: 1, // received
+        deliveryStatus: 2, // delivered
+      );
+
+      // Store with both plaintext and encrypted payload
+      await DatabaseHelper.instance.insertMessage(msg, packet.payload);
+
+      // Ensure a chat exists for this sender
+      await DatabaseHelper.instance.getOrCreateDirectChat(packet.sourceId);
+
+      // Notify the UI to refresh
+      if (onMessageReceived != null) {
+        onMessageReceived!(packet.sourceId);
+      }
+    } catch (e) {
+      print("Failed to deliver payload: $e");
+    }
   }
 
   void _onPeerConnected(String peerId) async {
