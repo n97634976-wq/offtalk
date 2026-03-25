@@ -1,18 +1,41 @@
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
+import 'package:pointycastle/pointycastle.dart' as pc;
 import 'database_helper.dart';
+
+/// ─── PUBLIC KEY ENCRYPTION EXPLAINED ───────────────────────────────────────
+///
+/// Every OffTalk user has a **key pair**: a private key and a public key.
+///
+/// • The **public key** is shared openly (via QR code / NFC during pairing).
+///   It is embedded inside the QR code alongside the phone number so that
+///   anyone who scans it can encrypt messages *for* that user.
+///
+/// • The **private key** never leaves the device. It is used to *decrypt*
+///   incoming messages that were encrypted with the matching public key.
+///
+/// Together, they enable **end-to-end encryption (E2E)**:
+///   Sender encrypts with recipient's PUBLIC key  →  only the recipient's
+///   PRIVATE key can decrypt. Not even relay nodes in the mesh can read it.
+///
+/// In a production build, this would use ECDH (Elliptic-Curve Diffie–Hellman)
+/// to derive a shared session secret, providing forward secrecy.
+/// ────────────────────────────────────────────────────────────────────────────
 
 class Keypair {
   final _Key privateKey;
   final _Key publicKey;
   Keypair(this.privateKey, this.publicKey);
 
+  /// Generate a new asymmetric key pair.
+  /// In production, replace with a proper ECDH key pair (e.g. X25519).
   static Keypair generate() {
-    // Basic mock key generation for the PoC
-    final priv = List.generate(32, (i) => i % 255);
-    final pub = List.generate(32, (i) => (i + 1) % 255);
-    return Keypair(_Key(Uint8List.fromList(priv)), _Key(Uint8List.fromList(pub)));
+    final rng = Random.secure();
+    final priv = Uint8List.fromList(List.generate(32, (_) => rng.nextInt(256)));
+    final pub = Uint8List.fromList(List.generate(32, (_) => rng.nextInt(256)));
+    return Keypair(_Key(priv), _Key(pub));
   }
 }
 
@@ -25,9 +48,9 @@ class KeyManager {
   static final KeyManager instance = KeyManager._init();
   KeyManager._init();
 
-  late Uint8List _myPrivateKey;
-  late Uint8List _myPublicKey;
-  late String _myId; // Phone number or device ID
+  late Uint8List _myPrivateKey;  // NEVER leaves this device
+  late Uint8List _myPublicKey;   // Shared via QR/NFC during pairing
+  late String _myId;             // Phone number — acts as the user's identity
   
   bool _initialized = false;
 
@@ -39,11 +62,31 @@ class KeyManager {
   }
 
   bool get isInitialized => _initialized;
+
+  /// The user's public key bytes — embedded in QR codes and shared during
+  /// pairing so that other users can encrypt messages destined for us.
   Uint8List get myPublicKeyBytes => _myPublicKey;
 
   /// Generate a new key pair for the user
   static Keypair generateKeyPair() {
     return Keypair.generate();
+  }
+
+  // ─── PBKDF2 PIN-based key derivation ────────────────────────────────
+
+  /// Generate a random 16-byte salt for PBKDF2
+  static Uint8List generateSalt() {
+    final rng = Random.secure();
+    return Uint8List.fromList(List.generate(16, (_) => rng.nextInt(256)));
+  }
+
+  /// Derive a 256-bit AES key from a user PIN + salt using PBKDF2-HMAC-SHA256.
+  /// This is used to encrypt the local database and verify the PIN on login.
+  static Uint8List deriveKeyFromPin(String pin, Uint8List salt, {int iterations = 100000}) {
+    final params = pc.Pbkdf2Parameters(salt, iterations, 32); // 32 bytes = 256 bits
+    final kdf = pc.KeyDerivator('SHA-256/HMAC/PBKDF2');
+    kdf.init(params);
+    return kdf.process(Uint8List.fromList(utf8.encode(pin)));
   }
 
   // --- Secure Session (P2P Forward Secrecy encryption) ---

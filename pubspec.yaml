@@ -1,5 +1,7 @@
 name: offtalk
-description: Peer-to-peer, offline-first mesh messaging app
+description: "OffTalk – offline-first, serverless, encrypted messaging app using Bluetooth mesh and P2P. Works without internet. Open source."
+homepage: https://github.com/n97634976-wq/offtalk
+repository: https://github.com/n97634976-wq/offtalk
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -60,6 +62,8 @@ dependencies:
   path: ^1.8.3
   crypto: ^3.0.3
   emoji_picker_flutter: ^4.4.0
+  local_auth: ^2.3.0
+  url_launcher: ^6.2.5
 
 dev_dependencies:
   flutter_test:

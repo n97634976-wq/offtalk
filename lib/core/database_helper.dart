@@ -128,6 +128,40 @@ class DatabaseHelper {
     await db.insert('chats', chat.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
+  /// Link a contact to a chat (for direct chats, one contact per chat)
+  Future<void> linkContactToChat(String chatId, String contactId) async {
+    final db = await instance.database;
+    await db.insert('chat_contacts', {
+      'chat_id': chatId,
+      'contact_id': contactId,
+    }, conflictAlgorithm: ConflictAlgorithm.ignore);
+  }
+
+  /// Find or create a direct chat with a contact.
+  /// Returns the chat ID.
+  Future<String> getOrCreateDirectChat(String contactId) async {
+    final db = await instance.database;
+    // Check if a direct chat already exists with this contact
+    final existing = await db.rawQuery(
+      'SELECT c.id FROM chats c '
+      'INNER JOIN chat_contacts cc ON c.id = cc.chat_id '
+      'WHERE c.type = 0 AND cc.contact_id = ?',
+      [contactId],
+    );
+    if (existing.isNotEmpty) {
+      return existing.first['id'] as String;
+    }
+    // Create a new direct chat
+    final chatId = contactId; // use contactId as chatId for 1-1 chats
+    await db.insert('chats', {
+      'id': chatId,
+      'type': 0,
+      'created_at': DateTime.now().millisecondsSinceEpoch,
+    }, conflictAlgorithm: ConflictAlgorithm.ignore);
+    await linkContactToChat(chatId, contactId);
+    return chatId;
+  }
+
   Future<List<Chat>> getAllChats() async {
     final db = await instance.database;
     final maps = await db.query('chats', orderBy: 'created_at DESC');

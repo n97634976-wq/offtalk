@@ -32,6 +32,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   bool _isBlocked = false;
   Timer? _expiryTimer;
 
+  /// Stores message reactions: messageId -> emoji string
+  final Map<String, String> _reactions = {};
+
   final List<int> _ttlOptions = [0, 5, 30, 60, 300]; // seconds
   final Map<int, String> _ttlLabels = {
     0: 'Off',
@@ -237,54 +240,75 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                       if (remainingSecs < 0) remainingSecs = 0;
                     }
 
-                    return Align(
-                      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                        decoration: BoxDecoration(
-                          color: isMe ? const Color(0xFF005C4B) : const Color(0xFF202C33),
-                          borderRadius: BorderRadius.circular(12),
-                          border: hasTtl ? Border.all(color: Colors.orange.withOpacity(0.5), width: 1) : null,
-                        ),
+                    return GestureDetector(
+                      onLongPress: () => _showReactionPicker(msg.id),
+                      child: Align(
+                        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              msg.text.isNotEmpty ? msg.text : "[Encrypted Payload]",
-                              style: const TextStyle(color: Colors.white, fontSize: 16),
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                if (hasTtl) ...[
-                                  Icon(Icons.timer, size: 12, color: Colors.orange[300]),
-                                  const SizedBox(width: 2),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                              decoration: BoxDecoration(
+                                color: isMe ? const Color(0xFF005C4B) : const Color(0xFF202C33),
+                                borderRadius: BorderRadius.circular(12),
+                                border: hasTtl ? Border.all(color: Colors.orange.withOpacity(0.5), width: 1) : null,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
                                   Text(
-                                    "${remainingSecs}s",
-                                    style: TextStyle(color: Colors.orange[300], fontSize: 10),
+                                    msg.text.isNotEmpty ? msg.text : "[Encrypted Payload]",
+                                    style: const TextStyle(color: Colors.white, fontSize: 16),
                                   ),
-                                  const SizedBox(width: 6),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      if (hasTtl) ...[
+                                        Icon(Icons.timer, size: 12, color: Colors.orange[300]),
+                                        const SizedBox(width: 2),
+                                        Text(
+                                          "${remainingSecs}s",
+                                          style: TextStyle(color: Colors.orange[300], fontSize: 10),
+                                        ),
+                                        const SizedBox(width: 6),
+                                      ],
+                                      Text(
+                                        DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(msg.timestamp)),
+                                        style: const TextStyle(color: Colors.white54, fontSize: 10),
+                                      ),
+                                      if (isMe) ...[
+                                        const SizedBox(width: 4),
+                                        Icon(
+                                          msg.deliveryStatus == 0
+                                              ? Icons.schedule
+                                              : msg.deliveryStatus == 1
+                                                  ? Icons.check
+                                                  : Icons.done_all,
+                                          size: 14,
+                                          color: msg.deliveryStatus == 3 ? Colors.blue : Colors.white54,
+                                        ),
+                                      ]
+                                    ],
+                                  ),
                                 ],
-                                Text(
-                                  DateFormat.Hm().format(DateTime.fromMillisecondsSinceEpoch(msg.timestamp)),
-                                  style: const TextStyle(color: Colors.white54, fontSize: 10),
-                                ),
-                                if (isMe) ...[
-                                  const SizedBox(width: 4),
-                                  Icon(
-                                    msg.deliveryStatus == 0
-                                        ? Icons.schedule
-                                        : msg.deliveryStatus == 1
-                                            ? Icons.check
-                                            : Icons.done_all,
-                                    size: 14,
-                                    color: msg.deliveryStatus == 3 ? Colors.blue : Colors.white54,
-                                  ),
-                                ]
-                              ],
+                              ),
                             ),
+                            // Show reaction emoji below the bubble
+                            if (_reactions.containsKey(msg.id))
+                              Padding(
+                                padding: const EdgeInsets.only(left: 12, right: 12),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Text(_reactions[msg.id]!, style: const TextStyle(fontSize: 18)),
+                                ),
+                              ),
                           ],
                         ),
                       ),
@@ -293,11 +317,46 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, st) => Center(child: Text('Error: \$e')),
+              error: (e, st) => Center(child: Text('Error: $e')),
             ),
           ),
           _buildMessageInput(),
         ],
+      ),
+    );
+  }
+
+  /// Show a quick-reaction emoji picker on long press
+  void _showReactionPicker(String messageId) {
+    const quickEmojis = ['👍', '❤️', '😂', '😮', '😢', '🔥'];
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => Container(
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: quickEmojis.map((emoji) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (_reactions[messageId] == emoji) {
+                    _reactions.remove(messageId); // toggle off
+                  } else {
+                    _reactions[messageId] = emoji;
+                  }
+                });
+                Navigator.pop(context);
+              },
+              child: Text(emoji, style: const TextStyle(fontSize: 28)),
+            );
+          }).toList(),
+        ),
       ),
     );
   }

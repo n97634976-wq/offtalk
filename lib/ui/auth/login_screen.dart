@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:local_auth/local_auth.dart';
 import '../../providers/app_state_provider.dart';
+import '../../core/hive_helper.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -12,15 +15,18 @@ class LoginScreen extends ConsumerStatefulWidget {
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _pinController = TextEditingController();
+  final _localAuth = LocalAuthentication();
   bool _isLoading = false;
   String? _errorMessage;
   Timer? _lockoutTimer;
   Duration? _remainingLockout;
+  bool _biometricAvailable = false;
 
   @override
   void initState() {
     super.initState();
     _checkLockoutState();
+    _checkBiometric();
   }
 
   @override
@@ -28,6 +34,47 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     _lockoutTimer?.cancel();
     _pinController.dispose();
     super.dispose();
+  }
+
+  Future<void> _checkBiometric() async {
+    try {
+      final canCheck = await _localAuth.canCheckBiometrics;
+      final isSupported = await _localAuth.isDeviceSupported();
+      final biometricEnabled = HiveHelper.instance.getSetting('biometricEnabled', defaultValue: false);
+      setState(() {
+        _biometricAvailable = canCheck && isSupported && biometricEnabled == true;
+      });
+      // Auto-prompt biometric if available
+      if (_biometricAvailable && _remainingLockout == null) {
+        _authenticateWithBiometric();
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _authenticateWithBiometric() async {
+    try {
+      final authenticated = await _localAuth.authenticate(
+        localizedReason: 'Unlock OffTalk with your fingerprint or face',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+      if (authenticated) {
+        // Biometric success — bypass PIN and unlock the app
+        final profile = HiveHelper.instance.getSetting('profile');
+        if (profile != null) {
+          // We need the raw PIN to unlock SQLCipher. If stored biometric key exists, use it.
+          final storedPin = HiveHelper.instance.getSetting('biometric_pin');
+          if (storedPin != null) {
+            final result = ref.read(authStateProvider.notifier).login(storedPin);
+            if (result == LoginResult.success) return;
+          }
+        }
+      }
+    } on PlatformException catch (_) {
+      // Biometric failed, fall back to PIN
+    }
   }
 
   void _checkLockoutState() {
@@ -95,8 +142,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     switch (result) {
       case LoginResult.success:
-        // Auth state will change to authenticated, which triggers
-        // the MaterialApp in main.dart to show HomeScreen automatically
         break;
 
       case LoginResult.wrongPin:
@@ -105,7 +150,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _pinController.clear();
         setState(() {
           if (attemptsUntilLock == 3) {
-            // Just unlocked from a lockout round, fresh 3 attempts
             _errorMessage = "Incorrect PIN. You have 3 attempts before lockout.";
           } else {
             _errorMessage = "Incorrect PIN. $attemptsUntilLock attempt${attemptsUntilLock == 1 ? '' : 's'} remaining.";
@@ -229,6 +273,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         )
                       : const Text("Unlock", style: TextStyle(fontSize: 16)),
                 ),
+                if (_biometricAvailable) ...[
+                  const SizedBox(height: 16),
+                  OutlinedButton.icon(
+                    onPressed: _authenticateWithBiometric,
+                    icon: const Icon(Icons.fingerprint, size: 28),
+                    label: const Text("Unlock with Biometrics"),
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ],
           ),

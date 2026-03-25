@@ -6,6 +6,7 @@ import 'providers/app_state_provider.dart';
 import 'ui/onboarding_screen.dart';
 import 'ui/home_screen.dart';
 import 'ui/auth/login_screen.dart';
+import 'ui/settings/settings_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +31,7 @@ class OffTalkApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authStateProvider);
+    final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp(
       title: 'OffTalk',
@@ -47,7 +49,7 @@ class OffTalkApp extends ConsumerWidget {
         ),
         useMaterial3: true,
       ),
-      themeMode: ThemeMode.system,
+      themeMode: themeMode,
       home: switch (authState) {
         AuthState.authenticated => const HomeScreen(),
         AuthState.locked => const LoginScreen(),

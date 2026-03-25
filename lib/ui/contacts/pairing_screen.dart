@@ -10,10 +10,13 @@ import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/nfc_manager_android.dart' as android_nfc;
 import 'package:nfc_manager/nfc_manager_ios.dart' as ios_nfc;
 import 'package:ndef_record/ndef_record.dart';
+import 'package:uuid/uuid.dart';
 import '../../models/models.dart';
 import '../../core/database_helper.dart';
 import '../../providers/app_state_provider.dart';
+import '../../providers/chat_providers.dart';
 import '../../services/number_registry.dart';
+import '../chat/chat_screen.dart';
 
 class PairingScreen extends ConsumerStatefulWidget {
   const PairingScreen({super.key});
@@ -107,8 +110,36 @@ class _PairingScreenState extends ConsumerState<PairingScreen> {
 
   void _processInviteData(String rawData) async {
     try {
-      final data = jsonDecode(rawData);
-      if (data['phoneNumber'] == null || data['publicKey'] == null) return;
+      // Parse QR/NFC data – supports JSON and pipe-delimited formats
+      Map<String, dynamic> data;
+      try {
+        data = jsonDecode(rawData);
+      } catch (_) {
+        // Fallback: try pipe-separated format  phone:xxx|pubKey:xxx|name:xxx
+        data = {};
+        for (var part in rawData.split('|')) {
+          final sep = part.indexOf(':');
+          if (sep > 0) {
+            data[part.substring(0, sep)] = part.substring(sep + 1);
+          }
+        }
+        // Normalize alternate key names
+        data['phoneNumber'] ??= data['phone'];
+        data['publicKey'] ??= data['pubKey'];
+        data['displayName'] ??= data['name'];
+      }
+
+      if (data['phoneNumber'] == null || data['publicKey'] == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('❌ Invalid QR code – missing phone or key data'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return;
+      }
 
       _scannerController.stop();
 
@@ -154,7 +185,7 @@ class _PairingScreenState extends ConsumerState<PairingScreen> {
         }
       }
 
-      // Check for duplicate public key
+      // Check for duplicate public key or phone
       try {
         final existingContacts =
             await DatabaseHelper.instance.getAllContacts();
@@ -203,7 +234,23 @@ class _PairingScreenState extends ConsumerState<PairingScreen> {
         lastSeen: DateTime.now().millisecondsSinceEpoch,
       );
 
+      // 1. Save the contact to the database
       await DatabaseHelper.instance.insertContact(contact);
+
+      // 2. Create a direct chat for this contact so the user can start messaging
+      final chatId = const Uuid().v4();
+      final chat = Chat(
+        id: chatId,
+        type: 0, // direct
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+      );
+      await DatabaseHelper.instance.insertChat(chat);
+      // Link contact to the chat
+      await DatabaseHelper.instance.linkContactToChat(chatId, phone);
+
+      // 3. Invalidate providers so lists refresh immediately
+      ref.invalidate(contactsProvider);
+      ref.invalidate(chatsProvider);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -212,10 +259,27 @@ class _PairingScreenState extends ConsumerState<PairingScreen> {
             backgroundColor: Colors.green,
           ),
         );
-        Navigator.pop(context);
+
+        // 4. Navigate directly into the new chat
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ChatScreen(
+              chatId: phone,
+              contactName: contact.displayName,
+            ),
+          ),
+        );
       }
     } catch (e) {
-      // invalid payload
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ Error processing QR: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -349,7 +413,7 @@ class _PairingScreenState extends ConsumerState<PairingScreen> {
                       icon: const Icon(Icons.share, size: 32),
                       onPressed: () {
                         Share.share(
-                            'Join me on OffTalk! My public ID is: \$qrData');
+                            'Join me on OffTalk! My public ID is: $qrData');
                       },
                       color: Theme.of(context).colorScheme.primary,
                     ),

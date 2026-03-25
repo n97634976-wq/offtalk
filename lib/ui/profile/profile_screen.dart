@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:convert';
 import '../../providers/app_state_provider.dart';
 import '../../core/hive_helper.dart';
@@ -87,9 +88,7 @@ class ProfileScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white
-                    : Colors.white,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: QrImageView(
@@ -121,6 +120,53 @@ class ProfileScreen extends ConsumerWidget {
                   );
                 },
               ),
+            ),
+
+            const SizedBox(height: 16),
+            const Divider(),
+            const SizedBox(height: 8),
+
+            // ── Support & Report Section ──
+            const Text(
+              "Support & Feedback",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.bug_report, color: Colors.red),
+                title: const Text("Report a Bug"),
+                subtitle: const Text("n97634976.wq@gmail.com"),
+                onTap: () async {
+                  final uri = Uri(
+                    scheme: 'mailto',
+                    path: 'n97634976.wq@gmail.com',
+                    query: 'subject=OffTalk Bug Report&body=Please describe the issue:',
+                  );
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri);
+                  }
+                },
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.favorite, color: Colors.pink),
+                title: const Text("Help Build OffTalk"),
+                subtitle: const Text("Contribute on GitHub"),
+                onTap: () async {
+                  final uri = Uri.parse('https://github.com/n97634976-wq/offtalk');
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                  }
+                },
+              ),
+            ),
+
+            const SizedBox(height: 24),
+            Text(
+              "OffTalk v1.0.0-beta",
+              style: TextStyle(fontSize: 12, color: Colors.grey[500]),
             ),
           ],
         ),

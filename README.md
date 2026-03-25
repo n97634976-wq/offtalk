@@ -8,6 +8,14 @@
   <strong>The 100% Offline-First, Serverless, Peer-to-Peer Messaging App.</strong>
 </p>
 
+<p align="center">
+  <img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3">
+  <img src="https://img.shields.io/badge/Flutter-3.24+-02569B?logo=flutter" alt="Flutter">
+  <img src="https://img.shields.io/badge/Platform-Android-green?logo=android" alt="Platform: Android">
+  <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen.svg" alt="PRs Welcome">
+  <img src="https://img.shields.io/badge/Server-None!-red" alt="No Server">
+</p>
+
 ---
 
 ## 📥 Download the App (Latest APK)
